@@ -22,7 +22,7 @@ defmodule Day01Test do
 
     test "large data set" do
       assert large_input()
-             |> Day01.part_02() == 31
+             |> Day01.part_02() == 25_574_739
     end
   end
 
