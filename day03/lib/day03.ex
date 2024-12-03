@@ -2,14 +2,10 @@ defmodule Day03 do
   def part1(data) do
     ~r/mul\(\d+,\d+\)/
     |> Regex.scan(data)
-    |> Enum.map(fn str ->
-      Regex.named_captures(~r/mul\((?<a>\d+),(?<b>\d+)\)/, Enum.at(str, 0))
+    |> Enum.map(fn [str] ->
+      Regex.named_captures(~r/mul\((?<a>\d+),(?<b>\d+)\)/, str)
     end)
-    |> Enum.map(fn %{"a" => a_str, "b" => b_str} ->
-      {a, ""} = Integer.parse(a_str)
-      {b, ""} = Integer.parse(b_str)
-      a * b
-    end)
+    |> extract_and_multiply()
     |> Enum.reduce(fn num, acc -> num + acc end)
   end
 
@@ -34,11 +30,15 @@ defmodule Day03 do
       end
     end)
     |> elem(1)
-    |> Enum.map(fn %{"a" => a_str, "b" => b_str} ->
+    |> extract_and_multiply()
+    |> Enum.reduce(fn num, acc -> num + acc end)
+  end
+
+  defp extract_and_multiply(data) do
+    Enum.map(data, fn %{"a" => a_str, "b" => b_str} ->
       {a, ""} = Integer.parse(a_str)
       {b, ""} = Integer.parse(b_str)
       a * b
     end)
-    |> Enum.reduce(fn num, acc -> num + acc end)
   end
 end
